@@ -14,7 +14,7 @@ const movies = ref<Movie[]>([])
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8081/movies')
+    const response = await fetch('https://movie-watchlist-backend-lq4w.onrender.com/movies')
 
     if (!response.ok) {
       throw new Error('Filme konnten nicht geladen werden')
