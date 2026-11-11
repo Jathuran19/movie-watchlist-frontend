@@ -1,30 +1,30 @@
 <script setup lang="ts">
-const movies = [
-  {
-    id: 1,
-    title: 'Interstellar',
-    genre: 'Science-Fiction',
-    releaseYear: 2014,
-    rating: 5,
-    watched: true,
-  },
-  {
-    id: 2,
-    title: 'Inception',
-    genre: 'Science-Fiction',
-    releaseYear: 2010,
-    rating: 4,
-    watched: true,
-  },
-  {
-    id: 3,
-    title: 'Avatar',
-    genre: 'Fantasy',
-    releaseYear: 2009,
-    rating: null,
-    watched: false,
-  },
-]
+import { ref, onMounted } from 'vue'
+
+type Movie = {
+  id: number
+  title: string
+  genre: string
+  releaseYear: number
+  rating: number | null
+  watched: boolean
+}
+
+const movies = ref<Movie[]>([])
+
+onMounted(async () => {
+  try {
+    const response = await fetch('http://localhost:8081/movies')
+
+    if (!response.ok) {
+      throw new Error('Filme konnten nicht geladen werden')
+    }
+
+    movies.value = await response.json()
+  } catch (error) {
+    console.error('Fehler beim Laden der Filme:', error)
+  }
+})
 </script>
 
 <template>
@@ -55,6 +55,7 @@ const movies = [
     </ul>
   </div>
 </template>
+
 <style scoped>
 :global(body) {
   background-color: #141414;
@@ -93,6 +94,7 @@ h2 {
   color: white;
   font-size: 26px;
 }
+
 ul {
   list-style: none;
   padding: 0;
